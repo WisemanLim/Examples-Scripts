@@ -1,11 +1,11 @@
-import * as crypto from 'crypto-js';
+import * as crypto from "crypto-js";
 
 class Block {
     static index = 0;
     private key = 0;
-    public hash;
-    private timestamp;
-    private data;
+    public hash: string;
+    private timestamp: any;
+    private data: string;
     public previousHash = '';
 
     constructor(private message) {
@@ -19,7 +19,7 @@ class Block {
     };
 
     createHash = () => {
-        return crypto.HmacSHA256(this.data, this.key.toString());
+        return crypto.HmacSHA256(this.data, this.key.toString()).toString();
     };
 
     mining = (zeroes) => {
