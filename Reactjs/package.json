@@ -1,0 +1,14 @@
+{
+  "name": "Reactjs",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "//": [
+      "terser, 자바스크립트 압축, https://gist.github.com/gaearon/42a2ffa41b8319948f9be4076286e1f3"
+    ],
+    "babel-cli": "6",
+    "babel-preset-react-app": "3",
+    "terser": "^5.13.1"
+  }
+}
