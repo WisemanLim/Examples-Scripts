@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Load Excel file</title>
+</head>
+
+<body>
+    <div class="js-excel-lib-demo" style="height: auto !important;">
+        <h1>SheetJS JS-XLSX example in Web Browser</h1>
+    </div>
+    <h2>xlsx.js example</h2>
+    <div>
+        Version: v0.14.3
+    </div>
+    <div>
+        Github: <a href="https://github.com/SheetJS/js-xlsx">https://github.com/SheetJS/js-xlsx</a></div>
+    <div>
+        NPM: <a href="https://www.npmjs.com/package/xlsx">https://www.npmjs.com/package/xlsx</a></div>
+    <div>
+        CDN: <a
+            href="https://cdn.jsdelivr.net/npm/xlsx@0.14.3/dist/xlsx.full.min.js">https://cdn.jsdelivr.net/npm/xlsx@0.14.3/dist/xlsx.full.min.js</a>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.14.3/dist/xlsx.full.min.js"></script>
+    <script>
+        function parseExcelFile1(inputElement) {
+            var files = inputElement.files || [];
+            if (!files.length) return;
+            var file = files[0];
+
+            console.time();
+            var reader = new FileReader();
+            reader.onloadend = function (event) {
+                var arrayBuffer = reader.result;
+                // debugger
+
+                var options = { type: 'array' };
+                var workbook = XLSX.read(arrayBuffer, options);
+                console.timeEnd();
+
+                var sheetName = workbook.SheetNames
+                var sheet = workbook.Sheets[sheetName]
+                result1.innerHTML = XLSX.utils.sheet_to_html(sheet)
+            };
+            reader.readAsArrayBuffer(file);
+        }
+    </script>
+    <h4>Test Online SheetJS xlsx.js</h4> <input type="file" onchange="parseExcelFile1(this)">
+    <div>
+        Select an Excel file and you will see the content:
+        <div id="result1"></div>
+    </div>
+    <h4>Usage:</h4>
+    <pre>// &lt;input type="file" onchange="parseExcelFile1(this)"&gt;
+function parseExcelFile1(inputElement) {
+  var files = inputElement.files || [];
+  if (!files.length) return;
+  var file = files[0];
+
+  console.time();
+  var reader = new FileReader();
+  reader.onloadend = function(event) {
+    var arrayBuffer = reader.result;
+    // debugger
+
+    var options = { type: 'array' };
+    var workbook = XLSX.read(arrayBuffer, options);
+    console.timeEnd();
+
+    var sheetName = workbook.SheetNames
+    var sheet = workbook.Sheets[sheetName]
+    result1.innerHTML = XLSX.utils.sheet_to_html(sheet)
+  };
+  reader.readAsArrayBuffer(file);
+}
+</pre> <br>
+    <h3>Related Topics</h3>
+    <div>SheetJS xlsx.js start tutorial<br>Using SheetJS xlsx.js in a browser(tutorial)</div>
+    <div>javascript manipulate Excel xlsx spreadsheet library<br>js read and parse excel xlsx document in
+        client-side(front-end) Browser<br>js preview excel xlsx Workbook spreadsheet in web Browser<br>js render excel
+        xlsx in web page</div>
+    <hr> <br>
+    <div>
+        <h4>Javascript Excel(XLSX) libraries Demo</h4>
+        <ul>
+            <li><a href="/demo/exceljs/">Exceljs Example</a></li>
+            <li><a href="/demo/sheetjs-xlsx-js/">Sheetjs xlsx.js Example</a></li>
+            <li><a href="/demo/xlsx-populate/">xlsx-populate.js Example</a></li>
+            <li><a href="/demo/exceljs-vs-sheetjs-vs-xlsx-populate/">exceljs VS sheetjs VS xlsx-populate Example</a>
+            </li>
+        </ul>
+    </div>
+    <div class="langBox"><a href="/demo/sheetjs-xlsx-js/" class="langItem">English</a> <a
+            href="/zh-cn/demo/sheetjs-xlsx-js/" class="langItem">中文简体</a></div>
+    </div>
+</body>
+
+</html>
