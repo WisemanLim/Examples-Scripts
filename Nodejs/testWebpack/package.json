@@ -1,0 +1,32 @@
+{
+  "name": "testWebpack",
+  "version": "1.0.0",
+  "main": "/src/index.js",
+  "license": "MIT",
+  "devDependencies": {
+    "html-webpack-plugin": "^5.5.0",
+    "pkg": "^5.8.0",
+    "webpack": "^5.75.0",
+    "webpack-cli": "^5.0.1",
+    "webpack-dev-server": "^4.11.1",
+    "webpack-merge": "^5.8.0"
+  },
+  "scripts": {
+    "dev": "webpack serve --open --config webpack.dev.js",
+    "build": "webpack --config webpack.prod.js",
+    "start": "webpack serve --open --config webpack.prod.js",
+    "build:pkg": "webpack --config webpack.prod.js && pkg ."
+  },
+  "bin": {
+    "app": "./dist/bundle.js"
+  },
+  "pkg": {
+    "targets": [ "node18-linux-x64", "node18-macos-x64", "node18-win-x64"],
+    "outputPath": "dist"
+  },
+  "//": {
+    "ref1": "https://webpack.js.org/guides/production/",
+    "ref2": "https://songdev.tistory.com/m/74",
+    "ref3": "https://johnmarc.tistory.com/54, https://www.npmjs.com/package/pkg"
+  }
+}
