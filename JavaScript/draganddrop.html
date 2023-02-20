@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <style>
+      .upload-container {
+        position: relative;
+      }
+
+      .upload-container input {
+        border: 1px solid #92b0b3;
+        background: #f1f1f1;
+        outline: 2px dashed #92b0b3;
+        outline-offset: -10px;
+        padding: 100px 0px 100px 250px;
+        text-align: center !important;
+        width: 500px;
+      }
+
+      .upload-container input:hover {
+        background: #ddd;
+      }
+
+      .upload-container:before {
+        position: absolute;
+        bottom: 50px;
+        left: 245px;
+        content: " (or) Drag and Drop files here. ";
+        color: #3f8188;
+        font-weight: 900;
+      }
+
+      .upload-btn {
+        margin-left: 300px;
+        padding: 7px 20px;
+      }
+
+      .heading-section {
+        font-size: 28px;
+        color: #000;
+      }
+
+      .table-responsive-xl {
+        text-align: center;
+        display: block;
+        width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+      .alert {
+        position: relative;
+        padding: 0.25rem 0.75rem;
+        margin-bottom: 1rem;
+        border: 1px solid transparent;
+        border-radius: 0.25rem;
+      }
+    </style>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Drag and Dtop file upload using JavaScript</title>
+    <script src="./papaparse.min.js"></script>
+  </head>
+  <body>
+    <div class="upload-container">
+      <input
+        type="file"
+        id="file_upload"
+        multiple="true"
+        onchange="uploadCSVFiles();"
+      />
+    </div>
+    <br />
+    <button
+      class="upload-btn"
+      onclick="uploadCSVFiles();"
+      style="display: none"
+    >
+      Submit
+    </button>
+    <input
+      type="file"
+      id="files"
+      class="form-control"
+      accept=".csv"
+      required
+      style="display: none"
+    />
+    <div class="pdfobject-container" id="parsed_csv_list"></div>
+  </body>
+  <!-- Drag and Drop file upload using JavaScript : https://javacodepoint.com/drag-and-drop-file-upload-using-javascript/ -->
+  <!-- Reading csv, images file : https://www.js-tutorials.com/javascript-tutorial/reading-csv-file-using-javascript-html5/, https://web.dev/read-files/ -->
+  <script>
+    function uploadCSVFiles() {
+      var files = document.getElementById("file_upload").files;
+      if (files.length == 0) {
+        alert("Please first choose or drop any file(s)...");
+        return;
+      }
+      var filenames = "";
+      for (var i = 0; i < files.length; i++) {
+        currentFile = files[i].name;
+        filenames += currentFile + "\n";
+        if (
+          currentFile.split(".")[1] == "csv" ||
+          currentFile.split(".")[1] == "txt"
+        ) {
+          // setFiles(i); // csv 파일 한개씩 파싱하는 로직 안됨
+          loadCSVFile();
+        } else if (
+          currentFile.split(".")[1] == "jpg" ||
+          currentFile.split(".")[1] == "jpeg" ||
+          currentFile.split(".")[1] == "png"
+        ) {
+          loadImageFile();
+        }
+      }
+      // alert("Selected file(s) :\n____________________\n" + filenames);
+    }
+
+    function setFiles(seq) {
+      const fileInput = document.getElementById("files");
+      const dataTransfer = new DataTransfer();
+      const filename = document.getElementById("file_upload").files[seq];
+      console.log(filename);
+      file = new File([], filename);
+      dataTransfer.items.add(file);
+      fileInput.files = dataTransfer.files;
+    }
+
+    function loadCSVFile() {
+      // const csvFile = document.getElementById("files");
+      const csvFile = document.getElementById("file_upload");
+      const file = csvFile.files[0];
+      Papa.parse(file, {
+        config: {
+          delimiter: "auto",
+        },
+        complete: (results) => {
+          // console.log("Finished:", results);
+          displayCSV2HTMLTable(file.name, results);
+        },
+      });
+    }
+
+    function displayCSV2HTMLTable(filename, results) {
+      var table = `<hr /><h2 class="heading-section">${filename}</h2><table class="table-responsive-xl">`;
+      var data = results.data;
+
+      for (i = 0; i < data.length; i++) {
+        table += "<tr>";
+        var row = data[i];
+        var cells = row.join(",").split(",");
+
+        for (j = 0; j < cells.length; j++) {
+          table += "<td class='alert' >";
+          table += cells[j];
+          table += "</td>";
+        }
+        table += "</tr>";
+      }
+      table += "</table>";
+      const parsedResults = document.getElementById("parsed_csv_list");
+      parsedResults.innerHTML = table;
+    }
+
+    function loadImageFile() {
+      const imgFile = document.getElementById("file_upload");
+      const file = imgFile.files[0];
+      console.log(file);
+      var image = `<hr /><h2 class="heading-section">${file.name}</h2>`;
+      const parsedResults = document.getElementById("parsed_csv_list");
+      parsedResults.innerHTML = image;
+      
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        const imagePreview = new Image(); // document.getElementById("preview");
+        imagePreview.src = reader.result;
+        parsedResults.append(imagePreview);
+      }
+      reader.readAsDataURL(file);
+    }
+  </script>
+  <script type="text/javascript">
+    window.addEventListener("DOMContentLoaded", () => {
+      //
+    });
+  </script>
+</html>
