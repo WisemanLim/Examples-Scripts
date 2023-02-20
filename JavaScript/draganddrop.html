@@ -58,7 +58,6 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Drag and Dtop file upload using JavaScript</title>
-    <script src="./papaparse.min.js"></script>
   </head>
   <body>
     <div class="upload-container">
@@ -89,6 +88,7 @@
   </body>
   <!-- Drag and Drop file upload using JavaScript : https://javacodepoint.com/drag-and-drop-file-upload-using-javascript/ -->
   <!-- Reading csv, images file : https://www.js-tutorials.com/javascript-tutorial/reading-csv-file-using-javascript-html5/, https://web.dev/read-files/ -->
+  <script src="./papaparse.min.js"></script>
   <script>
     function uploadCSVFiles() {
       var files = document.getElementById("file_upload").files;
@@ -112,6 +112,11 @@
           currentFile.split(".")[1] == "png"
         ) {
           loadImageFile();
+        } else if (
+          currentFile.split(".")[1] == "xls" ||
+          currentFile.split(".")[1] == "xlsx"
+        ) {
+          parseExcelFile();
         }
       }
       // alert("Selected file(s) :\n____________________\n" + filenames);
@@ -170,14 +175,40 @@
       var image = `<hr /><h2 class="heading-section">${file.name}</h2>`;
       const parsedResults = document.getElementById("parsed_csv_list");
       parsedResults.innerHTML = image;
-      
+
       const reader = new FileReader();
       reader.onload = function (e) {
         const imagePreview = new Image(); // document.getElementById("preview");
         imagePreview.src = reader.result;
         parsedResults.append(imagePreview);
-      }
+      };
       reader.readAsDataURL(file);
+    }
+  </script>
+  <script src="./xlsx.full.min.js"></script>
+  <script>
+    function parseExcelFile() {
+      const excelFile = document.getElementById("file_upload");
+      var files = excelFile.files || [];
+      if (!files.length) return;
+      var file = files[0];
+
+      console.time();
+      var reader = new FileReader();
+      reader.onloadend = function (event) {
+        var arrayBuffer = reader.result;
+        // debugger
+
+        var options = { type: "array" };
+        var workbook = XLSX.read(arrayBuffer, options);
+        console.timeEnd();
+
+        var sheetName = workbook.SheetNames;
+        var sheet = workbook.Sheets[sheetName];
+        const parsedResults = document.getElementById("parsed_csv_list");
+        parsedResults.innerHTML = XLSX.utils.sheet_to_html(sheet);
+      };
+      reader.readAsArrayBuffer(file);
     }
   </script>
   <script type="text/javascript">
