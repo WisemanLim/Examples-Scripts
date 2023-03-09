@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
+    <script defer src="https://pyscript.net/latest/pyscript.js"></script>
+    <title>PyGWalker Example</title>
+</head>
+<body>
+    <!-- https://github.com/Kanaries/pygwalker -->
+    <py-config>
+        packages = ["IPython", "pexpect", "pty", "tty", "termios", "pandas"]
+        [[runtimes]]
+        src = "https://github.com/Kanaries/pygwalker@main"
+        # src = "https://github.com/Kanaries/pygwalker/tree/main/pygwalker"
+        name = "pygwalker"
+        lang = "python"
+    </py-config>
+    <py-script>
+        import pandas as pd
+        import pygwalker as pyg
+
+        df = pd.read_csv('./bike_sharing_dc.csv', parse_dates=['date'])
+        gwalker = pyg.walk(df)
+    </py-script>    
+</body>
+</html>
