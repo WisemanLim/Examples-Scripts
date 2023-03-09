@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>File Viewer</title>
+    <style>
+      /* 드롭 영역 스타일 */
+      #drop-zone {
+        border: 2px dashed #bbb;
+        border-radius: 10px;
+        width: 500px;
+        height: 200px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 24px;
+      }
+      /* 이미지 미리보기 스타일 */
+      #image-preview {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="drop-zone">
+      <span>이곳에 파일을 드래그 & 드롭하세요.</span>
+    </div>
+    <img id="image-preview" src="#" alt="Image Preview" />
+    <script>
+      const dropZone = document.getElementById("drop-zone");
+      const imagePreview = document.getElementById("image-preview");
+
+      // 드롭 영역에 이벤트 리스너 등록
+      dropZone.addEventListener("dragover", (event) => {
+        event.preventDefault();
+        dropZone.style.backgroundColor = "#ddd";
+      });
+
+      // 드롭 영역에서 드래그가 끝나면 호출되는 함수
+      dropZone.addEventListener("drop", (event) => {
+        event.preventDefault();
+        dropZone.style.backgroundColor = "#fff";
+
+        const files = event.dataTransfer.files;
+
+        // 파일이 존재하는 경우
+        if (files.length > 0) {
+          const file = files[0];
+          const fileName = file.name.toLowerCase();
+          const fileType = fileName.substring(fileName.lastIndexOf(".") + 1);
+
+          // 지원하지 않는 파일인 경우
+          if (
+            fileType !== "xls" &&
+            fileType !== "xlsx" &&
+            fileType !== "csv" &&
+            fileType !== "txt" &&
+            fileType !== "jpeg" &&
+            fileType !== "jpg" &&
+            fileType !== "png"
+          ) {
+            alert("지원하지 않는 파일입니다.");
+            return;
+          }
+
+          // 이미지 파일인 경우 이미지 미리보기 표시
+          if (fileType === "jpeg" || fileType === "jpg" || fileType === "png") {
+            const reader = new FileReader();
+            reader.onload = () => {
+              imagePreview.src = reader.result;
+            };
+            reader.readAsDataURL(file);
+          }
+        }
+      });
+    </script>
+  </body>
+</html>

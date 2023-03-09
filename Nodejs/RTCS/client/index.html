@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Realtime Customer Support Chat Widget</title>
+</head>
+<body>
+  <center><h1>환영합니다.</h1></center>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+  <!-- <link rel="stylesheet" href="./css/monitor.css?v=<?php echo time(); ?>"> -->
+  <link rel="stylesheet" href="./css/monitor.css">
+  <link rel="stylesheet" href="./css/font-awesome/font-awesome.css">
+
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js" integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js" integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+  <script src="https://cdn.socket.io/4.6.0/socket.io.min.js" integrity="sha384-c79GN5VsunZvi+Q/WObgk2in0CbZsHnjEqvFxC5DxHn9lTfNce2WW6h2pH6u/kF+" crossorigin="anonymous"></script>
+  <!-- <script src="./js/monitor.js?v=<?php echo time(); ?>"></script> -->
+  <script src="./js/monitor.js"></script>
+  <script>
+    window.addEventListener('load', function () {
+      monitor.init();
+    });
+  </script>
+
+  <div class="container" id="chat-widget">
+    <div class="row chat-window col-md-4" id="chat_window_1" style="margin-left:10px; position: fixe; right:0px;">
+      <div class="col-md-12">
+        <div class="panel panel-default">
+          <div class="panel-heading top-bar">
+            <div class="row">
+              <div class="col-md-8">
+                <h5 class="panel-title"><span class="fa fa-comment"></span> Customer support</h5>
+              </div>
+              <div class="col-md-4" style="text-align: right;">
+                <a href="javascript:void(0);" style="color: white;"><span id="minim_chat_window" class="fa fa-plus icon_minim panel-collapsed" onclick="monitor.onIconMinimClick(this);"></span></a>
+              </div>
+            </div>
+          </div>
+          <div class="panel-body msg_container_base" style="display: none;">
+            <!-- chat will be displayd here -->
+            <form method="POST" onsubmit="return monitor.initializeChat(this);" style="display: contents;" id="form-initialize-chat-widget">
+              <div class="form-group" style="margin-top: 10px;">
+                <label>Name</label>
+                <input type="text" autocomplete="off" class="form-control" id="name" name="name" placeholder="Enter name" required />
+              </div>
+              <div class="form-group" style="margin-top: 10px;">
+                <label>Email</label>
+                <input type="text" autocomplete="off" class="form-control" id="email" name="email" placeholder="Enter email" required />
+              </div>
+              <button class="btn btn-primary" type="submit" name="submit">Start chat</button>
+            </form>
+          </div>
+          <div class="panel-footer">
+            <form method="POST" onsubmit="return monitor.sendMessage(this);" style="display: contents;" id="form-send-message-widget" target="blankifr">
+              <div class="input-group">
+                <input type="text" autocomplete="off" class="form-control message input-sm chat_input" onfocus="monitor.onChatInputFocus(this);" id="message" name="message" placeholder="Enter your message here..." required />
+                <span class="input-group-btn">
+                  <button class="btn btn-primary" type="submit" style="border-radius: 0px;">Send</button>
+                </span>
+              </div>
+            </form>
+            <iframe name='blankifr' style='display:none;'></iframe>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
